@@ -5,7 +5,6 @@ const { Product, Category, Tag, ProductTag } = require("../../models");
 
 // get all products
 router.get("/", async (req, res) => {
-	// find all products
 	try {
 		const productData = await Product.findAll({
 			include: [{ model: Category, model: Tag }],
@@ -78,7 +77,6 @@ router.put("/:id", async (req, res) => {
 			}));
 
 		// figure out which ones to remove
-
 		const productTagsToRemove = productTags.filter(({ tag_id }) => !req.body.tag_id.includes(tag_id)).map(({ id }) => id);
 		// run both actions
 		await Promise.all([ProductTag.destroy({ where: { id: productTagsToRemove } }), ProductTag.bulkCreate(newProductTags)]);
